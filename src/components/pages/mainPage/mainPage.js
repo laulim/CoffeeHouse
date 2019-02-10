@@ -4,7 +4,7 @@ import Footer from '../../footer';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 import GotService from '../../../server/getService';
 import BestItem from '../../bestItem';
-import randomId from '../../../randomId';
+
 
 class MainPage extends Component {
 
@@ -19,8 +19,9 @@ class MainPage extends Component {
   gotService = new GotService();
 
   componentDidMount() {
-    this.gotService.loadJson().then(({bestsellers}) => {
+    this.gotService.loadJson().then(({coffee}) => {
       this.setState(() => {
+        const bestsellers = coffee.filter((item) => item.best === true)
         return {
           bestData: bestsellers
         }
@@ -36,7 +37,8 @@ class MainPage extends Component {
       content = bestData.map((item) => {
         return (
           <BestItem
-            key={randomId()}
+            key={item.id}
+            id={item.id}
             name={item.name}
             url={item.url}
             price={item.price}
@@ -49,7 +51,7 @@ class MainPage extends Component {
       <>
         <Header pageType='MAIN_PAGE' header=''/>
 
-        <section className="about">
+        <section id='about' className="about">
           <div className="container">
             <div className="row">
               <div className="col-lg-6 offset-lg-3">

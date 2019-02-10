@@ -18,7 +18,7 @@ class App extends Component {
           <Route path='/our-coffe' exact component={OurCoffePage}/>
           <Route path='/for-your-pleasure' exact component={ForYourPleasurePage}/>
           <Route path='/contact-us' exact component={ContactUsPage}/>
-          <Route path='/our-coffe/coffe-sort-name' exact component={CoffeItemPage}/>
+          <Route path='/our-coffe/:id' exact component={CoffeItemPage}/>
         </Switch>
       </Router>
     )

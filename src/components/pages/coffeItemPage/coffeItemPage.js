@@ -1,48 +1,71 @@
 import React, {Component} from 'react';
 import Header from '../../header';
 import Footer from '../../footer';
-
-import coffeItem from '../../../images/coffee_item.jpg';
+// import coffeItem from '../../../images/coffee_item.jpg';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
+import GotService from '../../../server/getService';
 
 class CoffeItemPage extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: {}
+    }
+  }
+
+  gotService = new GotService();
+
+  componentDidMount() {
+    const curId = this.props.match.params.id;
+    this.gotService.loadJson().then(({coffee}) => {
+      this.setState(() => {
+        const index = coffee.findIndex(({id}) => +curId === +id);
+        const item = coffee[index];
+        return {
+          data: item
+        }
+      })
+    })
+  }
 
   render() {
+    const {name, country, url, price, description} = this.state.data;
+
     return (
       <>
-      <Header header='Solimo Coffee Beans'/>
-
-      <section className="shop">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-5 offset-1">
-              <img className="shop__girl" src={coffeItem} alt="coffee_item" />
-            </div>
-            <div className="col-lg-4">
-              <div className="title">About it</div>
-              <img className="beanslogo" src={beansLogoDark} alt="Beans logo" />
-              <div className="shop__point">
-                <span>Country:</span>
-                Brazil
+        <Header header={name}/>
+  
+        <section className="shop">
+          <div className="container">
+            <div className="row">
+              <div className="col-lg-5 offset-1">
+                <img className="shop__girl" src={url} alt="coffee_item" />
               </div>
-              <div className="shop__point">
-                <span>Description:</span>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                  Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-              </div>
-              <div className="shop__point">
-                <span>Price:</span>
-                <span className="shop__point-price">16.99$</span>
+              <div className="col-lg-4">
+                <div className="title">About it</div>
+                <img className="beanslogo" src={beansLogoDark} alt="Beans logo" />
+                <div className="shop__point">
+                  <span>Country: </span>
+                  {country}
+                </div>
+                <div className="shop__point">
+                  <span>Description: </span>
+                    {description}
+                </div>
+                <div className="shop__point">
+                  <span>Price: </span>
+                  <span className="shop__point-price">{price}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-
-      <Footer/>
+        </section>
+  
+        <Footer/>
       </>
     )
+    
   }
 }
 
