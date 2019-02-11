@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Header from '../../header';
 import Footer from '../../footer';
-// import coffeItem from '../../../images/coffee_item.jpg';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 import GotService from '../../../server/getService';
 
@@ -10,7 +9,8 @@ class CoffeItemPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: {}
+      data: {},
+      crop: true
     }
   }
 
@@ -29,8 +29,21 @@ class CoffeItemPage extends Component {
     })
   }
 
+  cropText = (text, letters = 200) => {
+    return text.substring(0, letters) + '...'
+  }
+
+  unCropText = () => {
+    this.setState({
+      crop: false
+    })
+  }
+
   render() {
     const {name, country, url, price, description} = this.state.data;
+
+
+    const desc = description ? description : '';
 
     return (
       <>
@@ -49,9 +62,9 @@ class CoffeItemPage extends Component {
                   <span>Country: </span>
                   {country}
                 </div>
-                <div className="shop__point">
+                <div className="shop__point" onClick={this.unCropText}>
                   <span>Description: </span>
-                    {description}
+                    {this.state.crop ? this.cropText(desc) : desc}
                 </div>
                 <div className="shop__point">
                   <span>Price: </span>
