@@ -35,8 +35,8 @@ class OurCoffePage extends Component {
     return data.map((item) => {
       return (
         <ShopItem
-          id={item.id}
           key={item.id}
+          id={item.id}
           name={item.name}
           url={item.url}
           price={item.price}

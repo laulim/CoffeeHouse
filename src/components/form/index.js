@@ -1,2 +1,2 @@
-import Form from './form';
-export default Form
+import FormBase from './form';
+export default FormBase

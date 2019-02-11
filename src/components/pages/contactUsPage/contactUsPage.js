@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Header from '../../header';
 import Footer from '../../footer';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
-
+import FormBase from '../../form';
 class ContactUsPage extends Component {
 
   render() {
@@ -18,8 +18,8 @@ class ContactUsPage extends Component {
                 </div>
               </div>
               <div className="row justify-content-center">
-                <div className="col-lg-7">
-
+                <div className="col-lg-6">
+                  <FormBase/>
                 </div>
               </div>
             </div>
