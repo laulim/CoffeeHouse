@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Header from '../../header';
 import Footer from '../../footer';
 
-import coffeGirl from '../../../images/coffee_girl.jpg';
+import coffeGirl from '../../../images/coffee-goods.png';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 
 import ShopItem from '../../shopItem';

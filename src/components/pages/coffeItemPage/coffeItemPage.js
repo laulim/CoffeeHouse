@@ -41,8 +41,6 @@ class CoffeItemPage extends Component {
 
   render() {
     const {name, country, url, price, description} = this.state.data;
-
-
     const desc = description ? description : '';
 
     return (
