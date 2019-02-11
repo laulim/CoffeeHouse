@@ -5,13 +5,16 @@ import coffeGirl from '../../../images/coffee_girl.jpg';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 import ShopItem from '../../shopItem';
 import GotService from '../../../server/getService';
+import SearchPanel from '../../searchPanel';
 
 class OurCoffePage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      shopData: null
+      shopData: null,
+      term: '',
+      filter: 'all'
     }
   }
 
@@ -27,25 +30,41 @@ class OurCoffePage extends Component {
     })
   }
 
-  render() {
-    const {shopData} = this.state;
+  renderItems = (data) => {
+    return data.map((item) => {
+      return (
+        <ShopItem
+          id={item.id}
+          key={item.id}
+          name={item.name}
+          url={item.url}
+          price={item.price}
+          country={item.country}
+        />
+      )
+    })
+  }
 
-    let content = [];
-    if (shopData) {
-      content = shopData.map((item) => {
-        return (
-          <ShopItem
-            id={item.id}
-            key={item.id}
-            name={item.name}
-            url={item.url}
-            price={item.price}
-            country={item.country}
-          />
-        )
-      })
+  onUpdateSearch = (term) => {
+    this.setState({term});
+  }
+
+  searchPost = (items, term) => {
+    
+    if (term.trim().length === 0) {
+      return items;
     }
 
+    return items.filter((item) => {
+      return item.props.name.toLowerCase().indexOf(term) > -1;
+    })
+  }
+
+  render() {
+    const {shopData, term} = this.state;
+
+    let content = shopData ? this.searchPost((this.renderItems(shopData)), term) :[];
+    // let content = shopData ? this.renderItems(shopData) : [];
 
     return (
       <>
@@ -73,12 +92,13 @@ class OurCoffePage extends Component {
             </div>
             <div className="line"></div>
             <div className="row">
-              <div className="col-lg-4 offset-2">
+              <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
+              {/* <div className="col-lg-4 offset-2">
                 <form action="#" className="shop__search">
                   <label className="shop__search-label" htmlFor="filter">Looking for</label>
                   <input id="filter" type="text" placeholder="start typing here..." className="shop__search-input" />
                 </form>
-              </div>
+              </div> */}
               <div className="col-lg-4">
                 <div className="shop__filter">
                   <div className="shop__filter-label">Or filter</div>
