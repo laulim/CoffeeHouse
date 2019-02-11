@@ -16,7 +16,7 @@ class SearchPanel extends Component {
 
   render() {
     return (
-      <div className="col-lg-4 offset-2">
+      <div className="col-lg-5 offset-1">
         <form action="#" className="shop__search">
           <label className="shop__search-label" htmlFor="filter">Looking for</label>
           <input 

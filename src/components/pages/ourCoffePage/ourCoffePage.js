@@ -6,6 +6,7 @@ import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 import ShopItem from '../../shopItem';
 import GotService from '../../../server/getService';
 import SearchPanel from '../../searchPanel';
+import FilterPanel from '../../filterPanel';
 
 class OurCoffePage extends Component {
 
@@ -60,11 +61,33 @@ class OurCoffePage extends Component {
     })
   }
 
-  render() {
-    const {shopData, term} = this.state;
+  onFilterSelect = (filter) => {
+    this.setState({filter});
+  }
 
-    let content = shopData ? this.searchPost((this.renderItems(shopData)), term) :[];
-    // let content = shopData ? this.renderItems(shopData) : [];
+  filterPosts = (items, filter) => {
+    switch (filter) {
+      case 'brazil':
+        return items.filter((item) => {
+          return item.props.country.toLowerCase() === filter;
+        });
+      case 'kenya':
+        return items.filter((item) => {
+          return item.props.country.toLowerCase() === filter;
+        });
+      case 'columbia':
+        return items.filter((item) => {
+          return item.props.country.toLowerCase() === filter;
+        });
+      default: 
+        return items;
+    }
+  }
+
+  render() {
+    const {shopData, term, filter} = this.state;
+
+    let content = shopData ? this.filterPosts(this.searchPost((this.renderItems(shopData)), term), filter) :[];
 
     return (
       <>
@@ -93,22 +116,10 @@ class OurCoffePage extends Component {
             <div className="line"></div>
             <div className="row">
               <SearchPanel onUpdateSearch={this.onUpdateSearch}/>
-              {/* <div className="col-lg-4 offset-2">
-                <form action="#" className="shop__search">
-                  <label className="shop__search-label" htmlFor="filter">Looking for</label>
-                  <input id="filter" type="text" placeholder="start typing here..." className="shop__search-input" />
-                </form>
-              </div> */}
-              <div className="col-lg-4">
-                <div className="shop__filter">
-                  <div className="shop__filter-label">Or filter</div>
-                  <div className="shop__filter-group">
-                    <button className="shop__filter-btn">Brazil</button>
-                    <button className="shop__filter-btn">Kenya</button>
-                    <button className="shop__filter-btn">Columbia</button>
-                  </div>
-                </div>
-              </div>
+              <FilterPanel 
+                filter={filter}
+                onFilterSelect={this.onFilterSelect}
+              />
             </div>
             <div className="row">
               <div className="col-lg-10 offset-lg-1">
