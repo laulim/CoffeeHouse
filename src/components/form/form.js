@@ -25,23 +25,6 @@ class FormBase extends Component  {
 
   getService = new GetService();
 
-  handleFormSubmit = (e) => {
-    e.preventDefault();
-    const {userName, userEmail, userPhone, userMessage} = this.refs;
-    const {nameErr, emailErr, messageErr} = this.state;
-    if (!nameErr.toolTip && !emailErr.toolTip && !messageErr.toolTip) {
-      const data = {
-        userName: userName.value,
-        userEmail: userEmail.value,
-        userPhone: userPhone.value,
-        userMessage: userMessage.value
-      }
-
-      this.getService.uploadJson(data).then((res) => console.log(res));
-    }
-  }
-
-  
   validateName = (value) => {
     if (value.trim().length < 2) {
       this.setState({
@@ -50,6 +33,7 @@ class FormBase extends Component  {
           label: 'Name must be greater then 2 symbols'
         }
       })
+      return false;
     } else if (value.trim().length > 20) {
       this.setState({
         nameErr: {
@@ -57,6 +41,7 @@ class FormBase extends Component  {
           label: 'Name must be less then 20 symbols'
         }
       })
+      return false
     } else {
       this.setState({
         nameErr: {
@@ -64,6 +49,7 @@ class FormBase extends Component  {
           label: ''
         }
       })
+      return true
     }
   }
 
@@ -76,13 +62,15 @@ class FormBase extends Component  {
           label: 'Enter e-mail'
         }
       })
+      return false;
     } else if (!reg.test(value.trim())) {
         this.setState({
           emailErr: {
             toolTip: true,
             label: 'E-mail is incorrect'
           }
-        })
+        });
+        return false
       } else {
         this.setState({
           emailErr: {
@@ -90,6 +78,7 @@ class FormBase extends Component  {
             label: ''
           }
         })
+        return true
     }
   }
 
@@ -101,6 +90,7 @@ class FormBase extends Component  {
           label: 'Enter message please'
         }
       })
+      return false
     } else {
       this.setState({
         messageErr: {
@@ -108,7 +98,33 @@ class FormBase extends Component  {
           label: ''
         }
       })
+      return true
     }
+  }
+
+  handleFormSubmit = (e) => {
+    e.preventDefault();
+    const {userName, userEmail, userPhone, userMessage} = this.refs;
+    this.validateName(userName.value);
+    this.validateEmail(userEmail.value);
+    this.validateMsg(userMessage.value);
+
+    if (this.validateName(userName.value) && 
+      this.validateEmail(userEmail.value) && 
+      this.validateMsg(userMessage.value)) {
+
+      const data = {
+        userName: userName.value,
+        userEmail: userEmail.value,
+        userPhone: userPhone.value,
+        userMessage: userMessage.value
+      }
+
+      console.log(data)
+      this.getService.uploadJson(data)
+      .then(() => this.props.onToggleContent());
+    }
+    
   }
 
   onBlurHandle = (e) => {
@@ -128,84 +144,88 @@ class FormBase extends Component  {
 
   render() {
     return (
-      <form className='contact-form' onSubmit={this.handleFormSubmit}>
-        <div className='form-block'>
-          <label className='form-label'>
-            <span className='form-name'>Name<span className='form-required'>*</span></span>
-            <input 
-              className='form-input'
-              name='userName'
-              ref='userName'
-              id='userName'
-              onBlur={this.onBlurHandle}
-            />
-            <Tooltip 
-              placement="right" 
-              isOpen={this.state.nameErr.toolTip} 
-              target="userName">
-              {this.state.nameErr.label}
-            </Tooltip>
-          </label>
+      <div className="row justify-content-center">
+        <div className="col-lg-6">
+          <form className='contact-form' onSubmit={(e) => this.handleFormSubmit(e)}>
+            <div className='form-block'>
+              <label className='form-label'>
+                <span className='form-name'>Name<span className='form-required'>*</span></span>
+                <input 
+                  className='form-input'
+                  name='userName'
+                  ref='userName'
+                  id='userName'
+                  onBlur={this.onBlurHandle}
+                />
+                <Tooltip 
+                  placement="right" 
+                  isOpen={this.state.nameErr.toolTip} 
+                  target="userName">
+                  {this.state.nameErr.label}
+                </Tooltip>
+              </label>
 
-        </div>
+            </div>
 
-        <div className='form-block'>
-          <label className='form-label'>
-            <span className='form-name'>E-mail<span className='form-required'>*</span></span>
-            <input 
-              className='form-input'
-              name='userEmail'
-              ref='userEmail'
-              id='userEmail'
-              onBlur={this.onBlurHandle}
-            />
-            <Tooltip 
-              placement="right" 
-              isOpen={this.state.emailErr.toolTip} 
-              target="userEmail">
-              {this.state.emailErr.label}
-            </Tooltip>
-          </label>
-        </div>
+            <div className='form-block'>
+              <label className='form-label'>
+                <span className='form-name'>E-mail<span className='form-required'>*</span></span>
+                <input 
+                  className='form-input'
+                  name='userEmail'
+                  ref='userEmail'
+                  id='userEmail'
+                  onBlur={this.onBlurHandle}
+                />
+                <Tooltip 
+                  placement="right" 
+                  isOpen={this.state.emailErr.toolTip} 
+                  target="userEmail">
+                  {this.state.emailErr.label}
+                </Tooltip>
+              </label>
+            </div>
 
-        <div className='form-block'>
-          <label className='form-label'>
-            <span className='form-name'>Phone</span>
-            <InputMask 
-              className='form-input'
-              name='userPhone'
-              ref='userPhone'
-              placeholder='+7(___) ___-____'
-              mask="+7\(999) 999-9999" 
-              maskChar="_"
-            />
-          </label>
-        </div>
+            <div className='form-block'>
+              <label className='form-label'>
+                <span className='form-name'>Phone</span>
+                <InputMask 
+                  className='form-input'
+                  name='userPhone'
+                  ref='userPhone'
+                  placeholder='+7(___) ___-____'
+                  mask="+7\(999) 999-9999" 
+                  maskChar="_"
+                />
+              </label>
+            </div>
 
-        <div className='form-block'>
-          <label className='form-label form-label-textarea'>
-            <span className='form-name'>Your message<span className='form-required'>*</span></span>
-            <textarea 
-              className='form-input form-textarea'
-              name='userMessage'
-              ref='userMessage'
-              id='userMessage'
-              placeholder='Tell us...'
-              onBlur={this.onBlurHandle}
-            />
-          </label>
-          <Tooltip 
-            placement="right" 
-            isOpen={this.state.messageErr.toolTip} 
-            target="userMessage">
-            {this.state.messageErr.label}
-          </Tooltip>
-        </div>
+            <div className='form-block'>
+              <label className='form-label form-label-textarea'>
+                <span className='form-name'>Your message<span className='form-required'>*</span></span>
+                <textarea 
+                  className='form-input form-textarea'
+                  name='userMessage'
+                  ref='userMessage'
+                  id='userMessage'
+                  placeholder='Tell us...'
+                  onBlur={this.onBlurHandle}
+                />
+              </label>
+              <Tooltip 
+                placement="right" 
+                isOpen={this.state.messageErr.toolTip} 
+                target="userMessage">
+                {this.state.messageErr.label}
+              </Tooltip>
+            </div>
 
-        <div className='form-block form-block-submit'>
-          <button type='submit' className='form-submit'>Send us</button>
+            <div className='form-block form-block-submit'>
+              <button className='form-submit'>Send us</button>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     )
   }
 

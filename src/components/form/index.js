@@ -1,2 +1,3 @@
 import FormBase from './form';
-export default FormBase
+import FormAnswer from './formAnswer'
+export {FormBase, FormAnswer}

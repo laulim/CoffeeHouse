@@ -48,7 +48,7 @@
   max-height: 200px;
 }
 
-.form-submit {
+.form-submit, .form-answer-button {
   display: inline-block;
   width: 120px;
   height: 30px;
@@ -61,4 +61,18 @@
 
 .form-block-submit {
   text-align: center;
+}
+
+.form-answer-wrapper {
+  padding-top: 100px;
+  text-align: center;
+}
+
+.form-answer-title {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.form-answer-button-wrap {
+  padding-top: 100px;
 }
