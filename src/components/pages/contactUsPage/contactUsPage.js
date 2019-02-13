@@ -3,13 +3,15 @@ import Header from '../../header';
 import Footer from '../../footer';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 import {FormBase, FormAnswer} from '../../form';
+import ErrorBlock from '../../error';
+
 class ContactUsPage extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      answer: false
+
+    state = {
+      answer: false,
+      error: false 
     }
-  }
+
 
   onToggleContent = () => {
     this.setState({
@@ -18,9 +20,10 @@ class ContactUsPage extends Component {
   }
 
   render() {
-    const {answer} = this.state;
-
-    const content = !answer ? <FormBase onToggleContent={this.onToggleContent}/> : <FormAnswer onToggleContent={this.onToggleContent}/>;
+    const {answer, error} = this.state;
+    const content = error ? <ErrorBlock/> : !answer 
+      ? <FormBase onToggleContent={this.onToggleContent}/> 
+      : <FormAnswer onToggleContent={this.onToggleContent}/>;
 
     return (
       <>

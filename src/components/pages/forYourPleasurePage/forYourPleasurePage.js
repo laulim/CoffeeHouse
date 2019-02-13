@@ -7,7 +7,9 @@ import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 
 import ShopItem from '../../shopItem';
 import GotService from '../../../server/getService';
-import { Spinner } from 'reactstrap';
+import SpinnerLoad from '../../spinner';
+import ErrorBlock from '../../error';
+
 
 class ForYourPleasurePage extends Component {
 
@@ -15,21 +17,30 @@ class ForYourPleasurePage extends Component {
     super(props);
     this.state = {
       shopData: null,
-      loading: true
+      loading: true,
+      error: false
     }
   }
 
   gotService = new GotService();
 
   componentDidMount() {
-    this.gotService.loadJson().then(({goods}) => {
-      this.setState(() => {
-        return {
-          shopData: goods,
-          loading: false
-        }
+    this.gotService.loadJson()
+      .then(({goods}) => {
+        this.setState(() => {
+          return {
+            shopData: goods,
+            loading: false
+          }
+        })
       })
-    })
+      .catch((res) => {
+        console.log(res);
+        this.setState({
+          error: true,
+          loading: false
+        });
+      })
   }
 
   renderItems = (items) => {
@@ -48,10 +59,11 @@ class ForYourPleasurePage extends Component {
   }
 
   render() {
-    const {shopData} = this.state;
-    const content = this.state.loading 
-      ? <Spinner style={{ width: '5rem', height: '5rem' }} type="grow" /> 
-      : this.renderItems(shopData);
+
+    const {shopData, error, loading} = this.state;
+    const errorMsg = error ? <ErrorBlock/> : null;
+    const spinner = loading ? <SpinnerLoad /> : null;
+    const content = !(loading || error) ? this.renderItems(shopData) : null;
 
     return (
       <>
@@ -80,6 +92,8 @@ class ForYourPleasurePage extends Component {
               <div className="row">
                 <div className="col-lg-10 offset-lg-1">
                   <div className="shop__wrapper">
+                    {errorMsg}
+                    {spinner}
                     {content}
                   </div>
                 </div>

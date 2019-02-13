@@ -4,36 +4,45 @@ import Footer from '../../footer';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 import GotService from '../../../server/getService';
 import BestItem from '../../bestItem';
-import { Spinner } from 'reactstrap';
+import ErrorBlock from '../../error';
+import SpinnerLoad from '../../spinner';
 
 
 class MainPage extends Component {
 
-  
   constructor(props) {
     super(props);
     this.state = {
       bestData: null,
-      loading: true
-      
+      loading: true,
+      error: false
     }
   }
 
   gotService = new GotService();
 
   componentDidMount() {
-    this.gotService.loadJson().then(({coffee}) => {
-      this.setState(() => {
-        const bestsellers = coffee.filter((item) => item.best === true)
-        return {
-          bestData: bestsellers,
-          loading: false
-        }
+    this.gotService.loadJson()
+      .then(({coffee}) => {
+        this.setState(() => {
+          const bestsellers = coffee.filter((item) => item.best === true)
+          return {
+            bestData: bestsellers,
+            loading: false
+          }
+        })
       })
-    })
+      .catch((res) => {
+        console.log(res);
+        this.setState({
+          error: true,
+          loading: false
+        });
+      })
   }
 
   renderItems = (items) => {
+    // this.foo.bar = 0;
     return items.map((item) => {
       return (
         <BestItem
@@ -48,11 +57,12 @@ class MainPage extends Component {
   }
 
   render(){
-    const {bestData} = this.state;
-    const content = this.state.loading 
-      ? <Spinner style={{ width: '5rem', height: '5rem' }} type="grow" /> 
-      : this.renderItems(bestData);
-      
+
+    const {bestData, error, loading} = this.state;
+    const errorMsg = error ? <ErrorBlock/> : null;
+    const spinner = loading ? <SpinnerLoad/> : null;
+    const content = !(loading || error) ? this.renderItems(bestData) : null;
+
     return (
       <>
         <Header pageType='MAIN_PAGE' header=''/>
@@ -86,6 +96,8 @@ class MainPage extends Component {
             <div className="row">
               <div className="col-lg-10 offset-lg-1">
                 <div className="best__wrapper">
+                  {errorMsg}
+                  {spinner}
                   {content}
                 </div>
               </div>

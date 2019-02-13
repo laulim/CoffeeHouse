@@ -7,7 +7,8 @@ import ShopItem from '../../shopItem';
 import GotService from '../../../server/getService';
 import SearchPanel from '../../searchPanel';
 import FilterPanel from '../../filterPanel';
-import { Spinner } from 'reactstrap';
+import SpinnerLoad from '../../spinner';
+import ErrorBlock from '../../error';
 
 class OurCoffePage extends Component {
 
@@ -17,21 +18,30 @@ class OurCoffePage extends Component {
       shopData: null,
       term: '',
       filter: 'all',
-      loading: true
+      loading: true,
+      error: false
     }
   }
 
   gotService = new GotService();
 
   componentDidMount() {
-    this.gotService.loadJson().then(({coffee}) => {
-      this.setState(() => {
-        return {
-          shopData: coffee,
-          loading: false
-        }
+    this.gotService.loadJson()
+      .then(({coffee}) => {
+        this.setState(() => {
+          return {
+            shopData: coffee,
+            loading: false
+          }
+        })
       })
-    })
+      .catch((res) => {
+        console.log(res);
+        this.setState({
+          error: true,
+          loading: false
+        });
+      })
   }
 
   renderItems = (data) => {
@@ -88,11 +98,10 @@ class OurCoffePage extends Component {
   }
 
   render() {
-    const {shopData, term, filter} = this.state;
-
-    let content = this.state.loading 
-      ? <Spinner style={{ width: '5rem', height: '5rem' }} type="grow" /> 
-      : this.filterPosts(this.searchPost((this.renderItems(shopData)), term), filter);
+    const {shopData, term, filter, error, loading} = this.state;
+    const errorMsg = error ? <ErrorBlock/> : null;
+    const spinner = loading ? <SpinnerLoad /> : null;
+    const content = !(loading || error) ? this.filterPosts(this.searchPost((this.renderItems(shopData)), term), filter) : null;
 
     return (
       <>
@@ -129,6 +138,8 @@ class OurCoffePage extends Component {
             <div className="row">
               <div className="col-lg-10 offset-lg-1">
                 <div className="shop__wrapper">
+                  {errorMsg}
+                  {spinner}
                   {content}
                 </div>
               </div>
