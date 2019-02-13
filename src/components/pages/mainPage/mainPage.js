@@ -4,6 +4,7 @@ import Footer from '../../footer';
 import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 import GotService from '../../../server/getService';
 import BestItem from '../../bestItem';
+import { Spinner } from 'reactstrap';
 
 
 class MainPage extends Component {
@@ -12,7 +13,9 @@ class MainPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bestData: null
+      bestData: null,
+      loading: true
+      
     }
   }
 
@@ -23,30 +26,33 @@ class MainPage extends Component {
       this.setState(() => {
         const bestsellers = coffee.filter((item) => item.best === true)
         return {
-          bestData: bestsellers
+          bestData: bestsellers,
+          loading: false
         }
       })
     })
   }
 
+  renderItems = (items) => {
+    return items.map((item) => {
+      return (
+        <BestItem
+          key={item.id}
+          id={item.id}
+          name={item.name}
+          url={item.url}
+          price={item.price}
+        />
+      )
+    })
+  }
+
   render(){
     const {bestData} = this.state;
-
-    let content = [];
-    if (bestData) {
-      content = bestData.map((item) => {
-        return (
-          <BestItem
-            key={item.id}
-            id={item.id}
-            name={item.name}
-            url={item.url}
-            price={item.price}
-          />
-        )
-      })
-    }
-
+    const content = this.state.loading 
+      ? <Spinner style={{ width: '5rem', height: '5rem' }} type="grow" /> 
+      : this.renderItems(bestData);
+      
     return (
       <>
         <Header pageType='MAIN_PAGE' header=''/>

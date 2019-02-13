@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Tooltip } from "reactstrap";
+import { Tooltip, Spinner } from "reactstrap";
 import InputMask from 'react-input-mask';
 import './form.css'
 import GetService from '../../server/getService';
@@ -8,6 +8,7 @@ class FormBase extends Component  {
   constructor(props) {
     super(props);
     this.state = {
+      loading: false,
       nameErr: {
         toolTip: false,
         label: ''
@@ -103,7 +104,9 @@ class FormBase extends Component  {
   }
 
   handleFormSubmit = (e) => {
-    e.preventDefault(); // остановила дефолтное поведение
+    e.preventDefault();
+    this.setState({loading: true});
+
     const {userName, userEmail, userPhone, userMessage} = this.refs;
 
     if (this.validateName(userName.value) && 
@@ -117,14 +120,14 @@ class FormBase extends Component  {
         userMessage: userMessage.value
       }
 
-      console.log(JSON.stringify(data)); //тут страница все еще не обновляется
 
-      this.getService.uploadJson(data) // а вот тут уже обновляется :(
+      this.getService.uploadJson(data)
        .then((res) => {
-         console.log(res);
-         this.props.onToggleContent()
+         if (res.ok) {
+           this.props.onToggleContent()
+           this.setState({loading: false});
+         }
       });
-      //fetch('http://localhost:3001/contacts').then((res) => console.log(res));
     }
   }
 
@@ -144,6 +147,12 @@ class FormBase extends Component  {
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <Spinner style={{ width: '5rem', height: '5rem' }} type="grow" />
+      )
+    }
+
     return (
       <div className="row justify-content-center">
         <div className="col-lg-6">

@@ -7,13 +7,15 @@ import beansLogoDark from '../../../images/Beans_logo_dark.svg';
 
 import ShopItem from '../../shopItem';
 import GotService from '../../../server/getService';
+import { Spinner } from 'reactstrap';
 
 class ForYourPleasurePage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      shopData: null
+      shopData: null,
+      loading: true
     }
   }
 
@@ -23,30 +25,33 @@ class ForYourPleasurePage extends Component {
     this.gotService.loadJson().then(({goods}) => {
       this.setState(() => {
         return {
-          shopData: goods
+          shopData: goods,
+          loading: false
         }
       })
     })
   }
 
+  renderItems = (items) => {
+    return items.map((item) => {
+      return (
+        <ShopItem
+          isActive={true}
+          id={item.id}
+          key={item.id}
+          name={item.name}
+          url={item.url}
+          price={item.price}
+        />
+      )
+    })
+  }
+
   render() {
     const {shopData} = this.state;
-
-    let content = [];
-    if (shopData) {
-      content = shopData.map((item) => {
-        return (
-          <ShopItem
-            isActive={true}
-            id={item.id}
-            key={item.id}
-            name={item.name}
-            url={item.url}
-            price={item.price}
-          />
-        )
-      })
-    }
+    const content = this.state.loading 
+      ? <Spinner style={{ width: '5rem', height: '5rem' }} type="grow" /> 
+      : this.renderItems(shopData);
 
     return (
       <>

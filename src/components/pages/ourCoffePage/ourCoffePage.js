@@ -7,6 +7,7 @@ import ShopItem from '../../shopItem';
 import GotService from '../../../server/getService';
 import SearchPanel from '../../searchPanel';
 import FilterPanel from '../../filterPanel';
+import { Spinner } from 'reactstrap';
 
 class OurCoffePage extends Component {
 
@@ -15,7 +16,8 @@ class OurCoffePage extends Component {
     this.state = {
       shopData: null,
       term: '',
-      filter: 'all'
+      filter: 'all',
+      loading: true
     }
   }
 
@@ -25,7 +27,8 @@ class OurCoffePage extends Component {
     this.gotService.loadJson().then(({coffee}) => {
       this.setState(() => {
         return {
-          shopData: coffee
+          shopData: coffee,
+          loading: false
         }
       })
     })
@@ -87,7 +90,9 @@ class OurCoffePage extends Component {
   render() {
     const {shopData, term, filter} = this.state;
 
-    let content = shopData ? this.filterPosts(this.searchPost((this.renderItems(shopData)), term), filter) :[];
+    let content = this.state.loading 
+      ? <Spinner style={{ width: '5rem', height: '5rem' }} type="grow" /> 
+      : this.filterPosts(this.searchPost((this.renderItems(shopData)), term), filter);
 
     return (
       <>
