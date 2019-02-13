@@ -103,16 +103,13 @@ class FormBase extends Component  {
   }
 
   handleFormSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); // остановила дефолтное поведение
     const {userName, userEmail, userPhone, userMessage} = this.refs;
-    this.validateName(userName.value);
-    this.validateEmail(userEmail.value);
-    this.validateMsg(userMessage.value);
 
     if (this.validateName(userName.value) && 
       this.validateEmail(userEmail.value) && 
       this.validateMsg(userMessage.value)) {
-
+      
       const data = {
         userName: userName.value,
         userEmail: userEmail.value,
@@ -120,11 +117,15 @@ class FormBase extends Component  {
         userMessage: userMessage.value
       }
 
-      console.log(data)
-      this.getService.uploadJson(data)
-      .then(() => this.props.onToggleContent());
+      console.log(JSON.stringify(data)); //тут страница все еще не обновляется
+
+      this.getService.uploadJson(data) // а вот тут уже обновляется :(
+       .then((res) => {
+         console.log(res);
+         this.props.onToggleContent()
+      });
+      //fetch('http://localhost:3001/contacts').then((res) => console.log(res));
     }
-    
   }
 
   onBlurHandle = (e) => {

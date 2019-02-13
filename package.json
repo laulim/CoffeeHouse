@@ -16,7 +16,9 @@
     "yup": "^0.26.10"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"npm run starts\" \"npm run server\"",
+    "starts": "react-scripts start && react-scripts server",
+    "server": "json-server --watch public/db.json --port 3001",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

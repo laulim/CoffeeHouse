@@ -92,11 +92,18 @@
   ],
   "contacts": [
     {
-      "userName": "asdasdas",
+      "userName": "Mila",
       "userEmail": "laudylim@gmail.com",
       "userPhone": "+7(895) 086-2156",
-      "userMessage": "aegergrg",
+      "userMessage": "Hello",
       "id": 1
+    },
+    {
+      "userName": "Mila",
+      "userEmail": "laudylim@gmail.com",
+      "userPhone": "+7(895) 086-2156",
+      "userMessage": "from build with http-server",
+      "id": 2
     }
   ]
 }

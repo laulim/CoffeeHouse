@@ -17,13 +17,17 @@ class GetService {
   }
 
   uploadJson = async (data) => {
-    await fetch("http://localhost:3001/contacts/", {
+    const res = await fetch("http://localhost:3001/contacts", {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: {"Content-Type": "application/json"}
+      headers: {'Accept': 'application/json', "Content-Type": "application/json"}
     })
-    .then((res) => res.json())
-    .catch((res) => res.status)
+
+    if(!res.ok) {
+      throw res.status;
+    }
+
+    return res;
   }
 
 }
