@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import NavigationList from '../navigationList';
 import logo from '../../images/Logo.svg';
 import beansLogo from '../../images/Beans_logo.svg';
-import { Link } from 'react-scroll';
+import { Link } from 'react-router-dom';
 
 
 const MainPageContent = () => {
@@ -13,7 +13,7 @@ const MainPageContent = () => {
         <img className="beanslogo" src={beansLogo} alt="Beans logo" />
         <div className="preview__subtitle">We makes every day full of energy and taste</div>
         <div className="preview__subtitle">Want to try our beans?</div>
-        <Link to='about' className="preview__btn" smooth={true} duration= {500}>More</Link>
+        <Link to='our-coffe/' className="preview__btn">More</Link>
       </div>
     </div>
   )
