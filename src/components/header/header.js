@@ -13,7 +13,7 @@ const MainPageContent = () => {
         <img className="beanslogo" src={beansLogo} alt="Beans logo" />
         <div className="preview__subtitle">We makes every day full of energy and taste</div>
         <div className="preview__subtitle">Want to try our beans?</div>
-        <Link to='our-coffe/' className="preview__btn">More</Link>
+        <Link to={`${process.env.PUBLIC_URL}/our-coffe/`} className="preview__btn">More</Link>
       </div>
     </div>
   )

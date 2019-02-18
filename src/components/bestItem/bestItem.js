@@ -8,7 +8,7 @@ class BestItem extends Component {
     const {id, name, url, price} = this.props;
 
     return(
-      <Link to={`/our-coffe/${id}`} 
+      <Link to={`${process.env.PUBLIC_URL}/our-coffe/${id}`}
         className="best__item">
         <img src={url} alt={name} />
         <div className="best__item-title">{name}</div>

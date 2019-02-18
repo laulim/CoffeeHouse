@@ -14,16 +14,16 @@ class NavigationList extends Component {
     return (
       <ul className={ulClass}>
         <li className={liClass}>
-          <Link to='/'><img src={logo} alt="logo" /></Link>
+          <Link to={`${process.env.PUBLIC_URL}/`}><img src={logo} alt="logo" /></Link>
         </li>
         <li className={liClass}>
-          <Link to='/our-coffe/'>Our coffee</Link>
+          <Link to={`${process.env.PUBLIC_URL}/our-coffe/`}>Our coffee</Link>
         </li>
         <li className={liClass}>
-          <Link to='/for-your-pleasure/'>For your pleasure</Link>
+          <Link to={`${process.env.PUBLIC_URL}/for-your-pleasure/`}>For your pleasure</Link>
         </li>
         <li className={liClass}>
-          <Link to='/contact-us/'>Contact us</Link>
+          <Link to={`${process.env.PUBLIC_URL}/contact-us/`}>Contact us</Link>
         </li>
       </ul>
     )

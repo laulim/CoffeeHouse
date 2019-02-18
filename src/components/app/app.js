@@ -32,13 +32,13 @@ class App extends Component {
     const err = this.state.error;
 
     return (
-      <Router>
+      <Router basename={'.'}>
         <Switch>
-          <Route path='/' exact component={err === "MainPage" ? NotFound : MainPage}/>
-          <Route path='/our-coffe' exact component={err === "OurCoffePage" ? NotFound : OurCoffePage}/>
-          <Route path='/for-your-pleasure' exact component={err === "ForYourPleasurePage" ? NotFound : ForYourPleasurePage}/>
-          <Route path='/contact-us' exact component={err === "ContactUsPage" ? NotFound : ContactUsPage}/>
-          <Route path='/our-coffe/:id' exact component={err === "CoffeItemPage" ? NotFound : CoffeItemPage}/>
+          <Route path={`${process.env.PUBLIC_URL}/`} exact component={err === "MainPage" ? NotFound : MainPage}/>
+          <Route path={`${process.env.PUBLIC_URL}/our-coffe/`} exact component={err === "OurCoffePage" ? NotFound : OurCoffePage}/>
+          <Route path={`${process.env.PUBLIC_URL}/for-your-pleasure`} exact component={err === "ForYourPleasurePage" ? NotFound : ForYourPleasurePage}/>
+          <Route path={`${process.env.PUBLIC_URL}/contact-us`} exact component={err === "ContactUsPage" ? NotFound : ContactUsPage}/>
+          <Route path={`${process.env.PUBLIC_URL}/our-coffe/:id`} exact component={err === "CoffeItemPage" ? NotFound : CoffeItemPage}/>
           <Route component={NotFound}/>
         </Switch>
       </Router>

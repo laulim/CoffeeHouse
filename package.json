@@ -2,6 +2,7 @@
   "name": "diplom",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://lyudmilakovtun.ru/react10",
   "dependencies": {
     "bootstrap": "^4.2.1",
     "react": "^16.8.1",

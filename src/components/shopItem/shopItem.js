@@ -21,7 +21,7 @@ class ShopItem extends Component {
       )
     }
     return(
-      <Link to={`/our-coffe/${id}`} className="shop__item">
+      <Link to={`${process.env.PUBLIC_URL}/our-coffe/${id}`} className="shop__item">
         {content}
       </Link>
     )
